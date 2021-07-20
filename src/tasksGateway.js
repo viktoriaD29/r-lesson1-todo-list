@@ -21,9 +21,9 @@ export const fetchTasksList = () => {
         return res.json();
       }
     })
-    .then((tasksList) => {
-      return tasksList;
-    });
+    // .then((tasksList) => {
+    //   return tasksList;
+    // });
 };
 
 export const updataTask = (taskId, taskData) => {
