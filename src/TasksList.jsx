@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Task from './Task';
-import CreateTaskInput from './CreateTaskInput';
+import Task from './Task.jsx';
+import CreateTaskInput from './CreateTaskInput.jsx';
 import {
   createTask,
   fetchTasksList,
-  updataTask,
+  updateTask,
   deleteTask,
 } from './tasksGateway';
 
@@ -18,20 +18,18 @@ class TasksList extends Component {
   }
 
   fetchTasks = () => {
-    fetchTasksList().then((taskList) => {
+    fetchTasksList().then((tasksList) =>
       this.setState({
-        tasks: taskList,
-      });
-    });
+        tasks: tasksList,
+      })
+    );
   };
 
   onCreate = (text) => {
-    //1.create task object
-    //2.post object to server
-    //3.fetch list from server
-
+    //1. create task object
+    //2. post object on server
+    //3. fetch list from server
     const newTask = {
-      id: Math.random,
       text,
       done: false,
     };
@@ -39,36 +37,27 @@ class TasksList extends Component {
     createTask(newTask).then(() => this.fetchTasks());
   };
 
-  handelTaskStatusChange = (id) => {
-    //1.find task in state by id
-    //2.create updated task
-    //3.update task on server
-    //4.fetch updated task list
-
+  handleTaskStatusChange = (id) => {
+    // 1. find task in state by id
+    // 2. ctreate updated task
+    // 3. update task on server
+    // 4. fetch updated task list
     const { done, text } = this.state.tasks.find((task) => task.id === id);
     const updatedTask = {
       text,
       done: !done,
     };
 
-    updataTask(id, updatedTask).then(() => this.fetchTasks());
+    updateTask(id, updatedTask).then(() => this.fetchTasks());
   };
 
-  handelTaskDelete = (id) => {
-    //1.filter tasks
-    //2.update state
-
-    // const updatedTask = this.state.tasks.filter((task) => task.id !== id);
-
-    // this.setState({
-    //   tasks: updatedTask,
-    // });
-
+  handleTaskDelete = (id) => {
     deleteTask(id).then(() => this.fetchTasks());
   };
 
   render() {
     const sortedList = this.state.tasks.slice().sort((a, b) => a.done - b.done);
+
     return (
       <div className="todo-list">
         <CreateTaskInput onCreate={this.onCreate} />
@@ -77,8 +66,8 @@ class TasksList extends Component {
             <Task
               key={task.id}
               {...task}
-              onChange={this.handelTaskStatusChange}
-              onDelete={this.handelTaskDelete}
+              onChange={this.handleTaskStatusChange}
+              onDelete={this.handleTaskDelete}
             />
           ))}
         </ul>

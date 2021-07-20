@@ -1,38 +1,35 @@
 import React, { Component } from 'react';
 
 class CreateTaskInput extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: '',
-    };
-  }
+  state = {
+    value: '',
+  };
 
-  handelChange = (event) => {
+  handleChange = (event) => {
     this.setState({
       value: event.target.value,
     });
   };
 
-  handelTaskCreate = () => {
-    this.props.onCreate(this.state.value)
+  handleTaskCreate = () => {
+    this.props.onCreate(this.state.value);
     this.setState({
-      value: ''
-    })
-  }
+      value: '',
+    });
+  };
 
   render() {
     return (
       <div className="create-task">
         <input
           type="text"
-          className="create-task__input"
           value={this.state.value}
-          onChange={this.handelChange}
+          onChange={this.handleChange}
+          className="create-task__input"
         />
         <button
           className="btn create-task__btn"
-          onClick={this.handelTaskCreate}
+          onClick={this.handleTaskCreate}
         >
           Create
         </button>
@@ -43,6 +40,6 @@ class CreateTaskInput extends Component {
 
 export default CreateTaskInput;
 
-// 1.take text from input
-// 2.create task with this text
-// 3.add created task in the list
+// 1. Take text from input
+// 2. Create task with this text
+// 3. Add created task to the list
