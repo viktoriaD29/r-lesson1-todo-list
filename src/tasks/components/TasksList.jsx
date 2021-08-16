@@ -1,29 +1,34 @@
 import React, { Component } from 'react';
-import Task from './Task.jsx';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import Task from '../../Task.jsx';
 import CreateTaskInput from './CreateTaskInput.jsx';
 import {
   createTask,
-  fetchTasksList,
+  //fetchTasksList,
   updateTask,
   deleteTask,
-} from './tasksGateway';
+} from '../tasksGateway';
+import * as tasksAction from '../tasks.actions';
+import { tasksListSelector } from '../tasks.selectors';
 
 class TasksList extends Component {
-  state = {
-    tasks: [],
-  };
+  // state = {
+  //   tasks: [],
+  // };
 
   componentDidMount() {
-    this.fetchTasks();
+    this.props.getTaskList();
+    //this.fetchTasks();
   }
 
-  fetchTasks = () => {
-    fetchTasksList().then((tasksList) =>
-      this.setState({
-        tasks: tasksList,
-      })
-    );
-  };
+  // fetchTasks = () => {
+  //   fetchTasksList().then((tasksList) =>
+  //     this.setState({
+  //       tasks: tasksList,
+  //     })
+  //   );
+  // };
 
   onCreate = (text) => {
     //1. create task object
@@ -56,7 +61,8 @@ class TasksList extends Component {
   };
 
   render() {
-    const sortedList = this.state.tasks.slice().sort((a, b) => a.done - b.done);
+    //const sortedList = this.state.tasks.slice().sort((a, b) => a.done - b.done);
+    const sortedList = this.props.tasks.slice().sort((a, b) => a.done - b.done);
 
     return (
       <div className="todo-list">
@@ -70,10 +76,31 @@ class TasksList extends Component {
               onDelete={this.handleTaskDelete}
             />
           ))}
+
+          {/* <Task
+            tasks={this.props.tasks}
+            onChange={this.handleTaskStatusChange}
+            onDelete={this.handleTaskDelete}
+          /> */}
         </ul>
       </div>
     );
   }
 }
 
-export default TasksList;
+TasksList.propTypes = {
+  getTaskList: PropTypes.func.isRequired,
+  tasks: PropTypes.array,
+};
+
+const mapState = (state) => {
+  return {
+    tasks: tasksListSelector(state),
+  };
+};
+
+const mapDispatch = {
+  getTaskList: tasksAction.getTaskList,
+};
+
+export default connect(mapState, mapDispatch)(TasksList);
